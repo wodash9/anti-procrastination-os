@@ -1,0 +1,772 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "vite.config.ts",
+      "file_type": "code",
+      "source_file": "vite.config.ts",
+      "source_location": "L1",
+      "id": "vite_config_ts",
+      "community": 6,
+      "norm_label": "vite.config.ts"
+    },
+    {
+      "label": "vite-env.d.ts",
+      "file_type": "code",
+      "source_file": "src/vite-env.d.ts",
+      "source_location": "L1",
+      "id": "src_vite_env_d_ts",
+      "community": 7,
+      "norm_label": "vite-env.d.ts"
+    },
+    {
+      "label": "App.tsx",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L1",
+      "id": "src_app_tsx",
+      "community": 1,
+      "norm_label": "app.tsx"
+    },
+    {
+      "label": "createBlankProject()",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L23",
+      "id": "app_createblankproject",
+      "community": 1,
+      "norm_label": "createblankproject()"
+    },
+    {
+      "label": "scoreInput()",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L39",
+      "id": "app_scoreinput",
+      "community": 1,
+      "norm_label": "scoreinput()"
+    },
+    {
+      "label": "Landing()",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L49",
+      "id": "app_landing",
+      "community": 1,
+      "norm_label": "landing()"
+    },
+    {
+      "label": "setDraftScore()",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L89",
+      "id": "app_setdraftscore",
+      "community": 1,
+      "norm_label": "setdraftscore()"
+    },
+    {
+      "label": "submitProject()",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L93",
+      "id": "app_submitproject",
+      "community": 1,
+      "norm_label": "submitproject()"
+    },
+    {
+      "label": "startEmergency()",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L100",
+      "id": "app_startemergency",
+      "community": 1,
+      "norm_label": "startemergency()"
+    },
+    {
+      "label": "downloadExport()",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L106",
+      "id": "app_downloadexport",
+      "community": 1,
+      "norm_label": "downloadexport()"
+    },
+    {
+      "label": "main.tsx",
+      "file_type": "code",
+      "source_file": "src/main.tsx",
+      "source_location": "L1",
+      "id": "src_main_tsx",
+      "community": 8,
+      "norm_label": "main.tsx"
+    },
+    {
+      "label": "useWorkspace.ts",
+      "file_type": "code",
+      "source_file": "src/storage/useWorkspace.ts",
+      "source_location": "L1",
+      "id": "src_storage_useworkspace_ts",
+      "community": 4,
+      "norm_label": "useworkspace.ts"
+    },
+    {
+      "label": "seedProjects()",
+      "file_type": "code",
+      "source_file": "src/storage/useWorkspace.ts",
+      "source_location": "L5",
+      "id": "useworkspace_seedprojects",
+      "community": 4,
+      "norm_label": "seedprojects()"
+    },
+    {
+      "label": "useWorkspace()",
+      "file_type": "code",
+      "source_file": "src/storage/useWorkspace.ts",
+      "source_location": "L35",
+      "id": "useworkspace_useworkspace",
+      "community": 4,
+      "norm_label": "useworkspace()"
+    },
+    {
+      "label": "workspace.ts",
+      "file_type": "code",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L1",
+      "id": "src_storage_workspace_ts",
+      "community": 2,
+      "norm_label": "workspace.ts"
+    },
+    {
+      "label": "workspaceKey()",
+      "file_type": "code",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L3",
+      "id": "workspace_workspacekey",
+      "community": 2,
+      "norm_label": "workspacekey()"
+    },
+    {
+      "label": "createEmptyWorkspace()",
+      "file_type": "code",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L7",
+      "id": "workspace_createemptyworkspace",
+      "community": 2,
+      "norm_label": "createemptyworkspace()"
+    },
+    {
+      "label": "loadWorkspace()",
+      "file_type": "code",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L11",
+      "id": "workspace_loadworkspace",
+      "community": 2,
+      "norm_label": "loadworkspace()"
+    },
+    {
+      "label": "saveWorkspace()",
+      "file_type": "code",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L21",
+      "id": "workspace_saveworkspace",
+      "community": 2,
+      "norm_label": "saveworkspace()"
+    },
+    {
+      "label": "upsertProject()",
+      "file_type": "code",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L25",
+      "id": "workspace_upsertproject",
+      "community": 2,
+      "norm_label": "upsertproject()"
+    },
+    {
+      "label": "exportWorkspace()",
+      "file_type": "code",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L46",
+      "id": "workspace_exportworkspace",
+      "community": 2,
+      "norm_label": "exportworkspace()"
+    },
+    {
+      "label": "workspace.test.ts",
+      "file_type": "code",
+      "source_file": "src/storage/workspace.test.ts",
+      "source_location": "L1",
+      "id": "src_storage_workspace_test_ts",
+      "community": 9,
+      "norm_label": "workspace.test.ts"
+    },
+    {
+      "label": "setup.ts",
+      "file_type": "code",
+      "source_file": "src/test/setup.ts",
+      "source_location": "L1",
+      "id": "src_test_setup_ts",
+      "community": 10,
+      "norm_label": "setup.ts"
+    },
+    {
+      "label": "authConfig.ts",
+      "file_type": "code",
+      "source_file": "src/auth/authConfig.ts",
+      "source_location": "L1",
+      "id": "src_auth_authconfig_ts",
+      "community": 3,
+      "norm_label": "authconfig.ts"
+    },
+    {
+      "label": "isMockAllowed()",
+      "file_type": "code",
+      "source_file": "src/auth/authConfig.ts",
+      "source_location": "L27",
+      "id": "authconfig_ismockallowed",
+      "community": 3,
+      "norm_label": "ismockallowed()"
+    },
+    {
+      "label": "createAuthConfig()",
+      "file_type": "code",
+      "source_file": "src/auth/authConfig.ts",
+      "source_location": "L31",
+      "id": "authconfig_createauthconfig",
+      "community": 3,
+      "norm_label": "createauthconfig()"
+    },
+    {
+      "label": "getMockUser()",
+      "file_type": "code",
+      "source_file": "src/auth/authConfig.ts",
+      "source_location": "L48",
+      "id": "authconfig_getmockuser",
+      "community": 3,
+      "norm_label": "getmockuser()"
+    },
+    {
+      "label": "authConfig.test.ts",
+      "file_type": "code",
+      "source_file": "src/auth/authConfig.test.ts",
+      "source_location": "L1",
+      "id": "src_auth_authconfig_test_ts",
+      "community": 11,
+      "norm_label": "authconfig.test.ts"
+    },
+    {
+      "label": "AuthProvider.tsx",
+      "file_type": "code",
+      "source_file": "src/auth/AuthProvider.tsx",
+      "source_location": "L1",
+      "id": "src_auth_authprovider_tsx",
+      "community": 5,
+      "norm_label": "authprovider.tsx"
+    },
+    {
+      "label": "userFromKeycloak()",
+      "file_type": "code",
+      "source_file": "src/auth/AuthProvider.tsx",
+      "source_location": "L17",
+      "id": "authprovider_userfromkeycloak",
+      "community": 5,
+      "norm_label": "userfromkeycloak()"
+    },
+    {
+      "label": "AuthProvider()",
+      "file_type": "code",
+      "source_file": "src/auth/AuthProvider.tsx",
+      "source_location": "L27",
+      "id": "authprovider_authprovider",
+      "community": 5,
+      "norm_label": "authprovider()"
+    },
+    {
+      "label": "types.ts",
+      "file_type": "code",
+      "source_file": "src/domain/types.ts",
+      "source_location": "L1",
+      "id": "src_domain_types_ts",
+      "community": 12,
+      "norm_label": "types.ts"
+    },
+    {
+      "label": "planning.ts",
+      "file_type": "code",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L1",
+      "id": "src_domain_planning_ts",
+      "community": 0,
+      "norm_label": "planning.ts"
+    },
+    {
+      "label": "calculateScore()",
+      "file_type": "code",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L9",
+      "id": "planning_calculatescore",
+      "community": 0,
+      "norm_label": "calculatescore()"
+    },
+    {
+      "label": "getDecisionBand()",
+      "file_type": "code",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L13",
+      "id": "planning_getdecisionband",
+      "community": 0,
+      "norm_label": "getdecisionband()"
+    },
+    {
+      "label": "detectWipPressure()",
+      "file_type": "code",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L20",
+      "id": "planning_detectwippressure",
+      "community": 0,
+      "norm_label": "detectwippressure()"
+    },
+    {
+      "label": "isConcreteNextAction()",
+      "file_type": "code",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L28",
+      "id": "planning_isconcretenextaction",
+      "community": 0,
+      "norm_label": "isconcretenextaction()"
+    },
+    {
+      "label": "findZombieProjects()",
+      "file_type": "code",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L37",
+      "id": "planning_findzombieprojects",
+      "community": 0,
+      "norm_label": "findzombieprojects()"
+    },
+    {
+      "label": "getWeeklyReviewIssues()",
+      "file_type": "code",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L51",
+      "id": "planning_getweeklyreviewissues",
+      "community": 0,
+      "norm_label": "getweeklyreviewissues()"
+    },
+    {
+      "label": "generateEmergencyAction()",
+      "file_type": "code",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L61",
+      "id": "planning_generateemergencyaction",
+      "community": 0,
+      "norm_label": "generateemergencyaction()"
+    },
+    {
+      "label": "getMetrics()",
+      "file_type": "code",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L73",
+      "id": "planning_getmetrics",
+      "community": 0,
+      "norm_label": "getmetrics()"
+    },
+    {
+      "label": "planning.test.ts",
+      "file_type": "code",
+      "source_file": "src/domain/planning.test.ts",
+      "source_location": "L1",
+      "id": "src_domain_planning_test_ts",
+      "community": 13,
+      "norm_label": "planning.test.ts"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_src": "src_app_tsx",
+      "_tgt": "app_createblankproject",
+      "source": "src_app_tsx",
+      "target": "app_createblankproject",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L160",
+      "weight": 1.0,
+      "_src": "src_app_tsx",
+      "_tgt": "app_scoreinput",
+      "source": "src_app_tsx",
+      "target": "app_scoreinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_src": "src_app_tsx",
+      "_tgt": "app_landing",
+      "source": "src_app_tsx",
+      "target": "app_landing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_src": "src_app_tsx",
+      "_tgt": "app_setdraftscore",
+      "source": "src_app_tsx",
+      "target": "app_setdraftscore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L93",
+      "weight": 1.0,
+      "_src": "src_app_tsx",
+      "_tgt": "app_submitproject",
+      "source": "src_app_tsx",
+      "target": "app_submitproject",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L100",
+      "weight": 1.0,
+      "_src": "src_app_tsx",
+      "_tgt": "app_startemergency",
+      "source": "src_app_tsx",
+      "target": "app_startemergency",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L106",
+      "weight": 1.0,
+      "_src": "src_app_tsx",
+      "_tgt": "app_downloadexport",
+      "source": "src_app_tsx",
+      "target": "app_downloadexport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L97",
+      "weight": 1.0,
+      "_src": "app_submitproject",
+      "_tgt": "app_createblankproject",
+      "source": "app_createblankproject",
+      "target": "app_submitproject",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/storage/useWorkspace.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "src_storage_useworkspace_ts",
+      "_tgt": "useworkspace_seedprojects",
+      "source": "src_storage_useworkspace_ts",
+      "target": "useworkspace_seedprojects",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/storage/useWorkspace.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_src": "src_storage_useworkspace_ts",
+      "_tgt": "useworkspace_useworkspace",
+      "source": "src_storage_useworkspace_ts",
+      "target": "useworkspace_useworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "src_storage_workspace_ts",
+      "_tgt": "workspace_workspacekey",
+      "source": "src_storage_workspace_ts",
+      "target": "workspace_workspacekey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "src_storage_workspace_ts",
+      "_tgt": "workspace_createemptyworkspace",
+      "source": "src_storage_workspace_ts",
+      "target": "workspace_createemptyworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_src": "src_storage_workspace_ts",
+      "_tgt": "workspace_loadworkspace",
+      "source": "src_storage_workspace_ts",
+      "target": "workspace_loadworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_src": "src_storage_workspace_ts",
+      "_tgt": "workspace_saveworkspace",
+      "source": "src_storage_workspace_ts",
+      "target": "workspace_saveworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_src": "src_storage_workspace_ts",
+      "_tgt": "workspace_upsertproject",
+      "source": "src_storage_workspace_ts",
+      "target": "workspace_upsertproject",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_src": "src_storage_workspace_ts",
+      "_tgt": "workspace_exportworkspace",
+      "source": "src_storage_workspace_ts",
+      "target": "workspace_exportworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_src": "workspace_loadworkspace",
+      "_tgt": "workspace_workspacekey",
+      "source": "workspace_workspacekey",
+      "target": "workspace_loadworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_src": "workspace_saveworkspace",
+      "_tgt": "workspace_workspacekey",
+      "source": "workspace_workspacekey",
+      "target": "workspace_saveworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src/storage/workspace.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "workspace_loadworkspace",
+      "_tgt": "workspace_createemptyworkspace",
+      "source": "workspace_createemptyworkspace",
+      "target": "workspace_loadworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/auth/authConfig.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_src": "src_auth_authconfig_ts",
+      "_tgt": "authconfig_ismockallowed",
+      "source": "src_auth_authconfig_ts",
+      "target": "authconfig_ismockallowed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/auth/authConfig.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_src": "src_auth_authconfig_ts",
+      "_tgt": "authconfig_createauthconfig",
+      "source": "src_auth_authconfig_ts",
+      "target": "authconfig_createauthconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/auth/authConfig.ts",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_src": "src_auth_authconfig_ts",
+      "_tgt": "authconfig_getmockuser",
+      "source": "src_auth_authconfig_ts",
+      "target": "authconfig_getmockuser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/auth/AuthProvider.tsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_src": "src_auth_authprovider_tsx",
+      "_tgt": "authprovider_userfromkeycloak",
+      "source": "src_auth_authprovider_tsx",
+      "target": "authprovider_userfromkeycloak",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/auth/AuthProvider.tsx",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_src": "src_auth_authprovider_tsx",
+      "_tgt": "authprovider_authprovider",
+      "source": "src_auth_authprovider_tsx",
+      "target": "authprovider_authprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_src": "src_domain_planning_ts",
+      "_tgt": "planning_calculatescore",
+      "source": "src_domain_planning_ts",
+      "target": "planning_calculatescore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "src_domain_planning_ts",
+      "_tgt": "planning_getdecisionband",
+      "source": "src_domain_planning_ts",
+      "target": "planning_getdecisionband",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_src": "src_domain_planning_ts",
+      "_tgt": "planning_detectwippressure",
+      "source": "src_domain_planning_ts",
+      "target": "planning_detectwippressure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_src": "src_domain_planning_ts",
+      "_tgt": "planning_isconcretenextaction",
+      "source": "src_domain_planning_ts",
+      "target": "planning_isconcretenextaction",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_src": "src_domain_planning_ts",
+      "_tgt": "planning_findzombieprojects",
+      "source": "src_domain_planning_ts",
+      "target": "planning_findzombieprojects",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L51",
+      "weight": 1.0,
+      "_src": "src_domain_planning_ts",
+      "_tgt": "planning_getweeklyreviewissues",
+      "source": "src_domain_planning_ts",
+      "target": "planning_getweeklyreviewissues",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_src": "src_domain_planning_ts",
+      "_tgt": "planning_generateemergencyaction",
+      "source": "src_domain_planning_ts",
+      "target": "planning_generateemergencyaction",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/domain/planning.ts",
+      "source_location": "L73",
+      "weight": 1.0,
+      "_src": "src_domain_planning_ts",
+      "_tgt": "planning_getmetrics",
+      "source": "src_domain_planning_ts",
+      "target": "planning_getmetrics",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": []
+}
