@@ -8,6 +8,7 @@ type AuthState = {
   user: PublicUser | null;
   error?: string;
   login: () => Promise<void>;
+  continueLocally: () => void;
   logout: () => Promise<void>;
   getAccessToken: () => Promise<string | null>;
 };
@@ -66,7 +67,7 @@ function initializeKeycloakOnce(client: Keycloak): Promise<boolean> {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<Omit<AuthState, 'login' | 'logout' | 'getAccessToken'>>({ isAuthenticated: false, isLoading: true, user: null });
+  const [state, setState] = useState<Omit<AuthState, 'login' | 'continueLocally' | 'logout' | 'getAccessToken'>>({ isAuthenticated: false, isLoading: true, user: null });
   const [keycloak, setKeycloak] = useState<Keycloak | null>(null);
   const configResult = useMemo(() => {
     try {
@@ -121,21 +122,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       ...state,
       async login() {
         if (!config) return;
-        if (config.mode === 'mock') {
-          setState({ isAuthenticated: true, isLoading: false, user: getMockUser() });
-          return;
-        }
-        if (!keycloak) return;
-        if (!keycloakInitialized) {
-          const authenticated = await initializeKeycloakOnce(keycloak);
-          if (authenticated) {
-            setState({ isAuthenticated: true, isLoading: false, user: userFromKeycloak(keycloak) });
+        try {
+          if (config.mode === 'mock') {
+            setState({ isAuthenticated: true, isLoading: false, user: getMockUser() });
             return;
           }
+          if (!keycloak) return;
+          if (!keycloakInitialized) {
+            const authenticated = await initializeKeycloakOnce(keycloak);
+            if (authenticated) {
+              setState({ isAuthenticated: true, isLoading: false, user: userFromKeycloak(keycloak) });
+              return;
+            }
+          }
+          await keycloak.login();
+        } catch (error) {
+          setState({
+            isAuthenticated: false,
+            isLoading: false,
+            user: null,
+            error: `Keycloak no responde correctamente: ${error instanceof Error ? error.message : String(error)}`,
+          });
         }
-        await keycloak.login();
+      },
+      continueLocally() {
+        setState({
+          isAuthenticated: true,
+          isLoading: false,
+          user: { ...getMockUser(), id: 'local-fallback-user', name: 'Modo local' },
+          error: undefined,
+        });
       },
       async logout() {
+        if (state.user?.id === 'local-fallback-user') {
+          setState({ isAuthenticated: false, isLoading: false, user: null });
+          return;
+        }
         if (!config) return;
         if (config.mode === 'mock') {
           setState({ isAuthenticated: false, isLoading: false, user: null });

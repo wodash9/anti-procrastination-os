@@ -46,19 +46,20 @@ function scoreInput(label: string, key: keyof ProjectScores, value: number, onCh
   );
 }
 
-function Landing({ onLogin }: { onLogin: () => Promise<void> }) {
+function Landing({ onLogin, onContinueLocally, authError }: { onLogin: () => Promise<void>; onContinueLocally: () => void; authError?: string }) {
   return (
     <main className="landing-shell">
       <nav className="topbar">
         <div className="brand"><span className="mark">S</span><span>Anti-Procrastination OS</span></div>
-        <button className="btn ghost" onClick={onLogin}>Entrar</button>
+        <button className="btn ghost" onClick={onLogin}>Entrar con Keycloak</button>
       </nav>
       <section className="hero-grid">
         <div>
           <span className="eyebrow"><span className="dot" /> Web app con Keycloak-ready auth</span>
           <h1>Menos proyectos abiertos. Más decisiones cerradas.</h1>
           <p className="lead">Convierte tu inventario mental en una sala de control: proyectos, WIP, foco diario, ritual semanal, emergencias y métricas. Si no fuerza reducción de WIP, es otro Notion peor.</p>
-          <div className="hero-actions"><button className="btn primary" onClick={onLogin}>Abrir mi sistema</button><a className="btn ghost" href="#features">Ver funcionalidades</a></div>
+          {authError && <div className="auth-warning"><strong>Keycloak no está disponible ahora mismo.</strong><span>{authError}</span><span>Puedes entrar en modo local mientras se corrige auth.etharlia.com. Los datos se guardan solo en este navegador.</span></div>}
+          <div className="hero-actions"><button className="btn primary" onClick={onLogin}>Entrar con Keycloak</button><button className="btn ghost" onClick={onContinueLocally}>Continuar en modo local</button><a className="btn ghost" href="#features">Ver funcionalidades</a></div>
         </div>
         <div className="panel hero-panel">
           <div className="panel-title">operating-system.preview</div>
@@ -223,7 +224,6 @@ function AppShell() {
 export default function App() {
   const auth = useAuth();
   if (auth.isLoading) return <main className="center"><div className="panel">Inicializando autenticación…</div></main>;
-  if (auth.error) return <main className="center"><div className="panel"><div className="panel-title">auth error</div><p className="warning">{auth.error}</p><p className="muted">Configura Keycloak en Coolify con VITE_AUTH_MODE=keycloak y las variables públicas VITE_KEYCLOAK_*.</p></div></main>;
-  if (!auth.isAuthenticated) return <Landing onLogin={auth.login} />;
+  if (!auth.isAuthenticated) return <Landing onLogin={auth.login} onContinueLocally={auth.continueLocally} authError={auth.error} />;
   return <AppShell />;
 }
