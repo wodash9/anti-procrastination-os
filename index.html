@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema Operativo Anti-Procrastinación</title>
+  <meta name="description" content="Plan práctico para reducir procrastinación cuando tienes demasiados proyectos abiertos: matriz de decisión, límite WIP, ritual semanal y protocolo de emergencia." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08090a;
+      --bg-deep: #010102;
+      --panel: #0f1011;
+      --surface: rgba(255,255,255,0.035);
+      --surface-strong: rgba(255,255,255,0.06);
+      --surface-hover: rgba(255,255,255,0.085);
+      --text: #f7f8f8;
+      --text-2: #d0d6e0;
+      --muted: #8a8f98;
+      --quiet: #62666d;
+      --line: rgba(255,255,255,0.08);
+      --line-soft: rgba(255,255,255,0.05);
+      --brand: #5e6ad2;
+      --brand-2: #7170ff;
+      --brand-3: #828fff;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --red: #fb7185;
+      --radius: 12px;
+      --shadow: rgba(0,0,0,.42) 0 24px 90px;
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      font-feature-settings: "cv01", "ss03";
+      background:
+        radial-gradient(circle at top left, rgba(94,106,210,.22), transparent 31rem),
+        radial-gradient(circle at 78% 10%, rgba(113,112,255,.15), transparent 24rem),
+        linear-gradient(180deg, var(--bg-deep), var(--bg) 22%, #07080a 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .noise {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: .09;
+      z-index: -1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.38'/%3E%3C/svg%3E");
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(18px);
+      background: rgba(8,9,10,.72);
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 510;
+      letter-spacing: -.13px;
+      color: var(--text);
+    }
+
+    .mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--brand), #2b2f77);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset, 0 12px 32px rgba(94,106,210,.35);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 510;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .btn {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 510;
+      color: #e2e4e7;
+      background: rgba(255,255,255,.03);
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.055); border-color: rgba(255,255,255,.14); }
+    .btn.primary { background: var(--brand); border-color: rgba(255,255,255,.12); color: white; box-shadow: 0 14px 40px rgba(94,106,210,.28); }
+    .btn.primary:hover { background: var(--brand-2); }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 22px;
+    }
+
+    .hero {
+      padding: 88px 0 46px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.03fr) minmax(330px, .97fr);
+      gap: 36px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.025);
+      color: var(--text-2);
+      font-size: 12px;
+      font-weight: 510;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+    }
+
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 20px var(--green); }
+
+    h1 {
+      margin: 22px 0 18px;
+      color: var(--text);
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: .95;
+      letter-spacing: -1.584px;
+      font-weight: 510;
+      text-wrap: balance;
+    }
+
+    .lead {
+      max-width: 650px;
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 20px);
+      line-height: 1.62;
+      letter-spacing: -.165px;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+
+    .proof-row {
+      margin-top: 26px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--quiet);
+      font-size: 12px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+    }
+
+    .proof-row span { padding: 7px 9px; border: 1px solid var(--line-soft); border-radius: 999px; background: rgba(255,255,255,.02); }
+
+    .dashboard {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
+      border-radius: 22px;
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.06);
+      overflow: hidden;
+    }
+
+    .dash-top {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15,16,17,.74);
+    }
+
+    .traffic { display: flex; gap: 7px; }
+    .traffic i { width: 10px; height: 10px; border-radius: 50%; background: #3b3d43; }
+    .traffic i:nth-child(1) { background: #fb7185; }
+    .traffic i:nth-child(2) { background: #f59e0b; }
+    .traffic i:nth-child(3) { background: #10b981; }
+    .dash-title { color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+
+    .dash-body { padding: 18px; }
+
+    .metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .metric {
+      padding: 14px;
+      border: 1px solid var(--line-soft);
+      border-radius: 12px;
+      background: rgba(0,0,0,.18);
+    }
+    .metric small { color: var(--quiet); font-size: 11px; font-family: 'JetBrains Mono', monospace; }
+    .metric strong { display: block; margin-top: 8px; font-size: 24px; letter-spacing: -.288px; }
+
+    .kanban {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .lane {
+      border: 1px solid var(--line-soft);
+      border-radius: 12px;
+      padding: 12px;
+      background: rgba(255,255,255,.025);
+    }
+    .lane-head { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace; margin-bottom: 10px; }
+    .task-card {
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      color: var(--text-2);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .task-card + .task-card { margin-top: 8px; }
+
+    section { padding: 72px 0; }
+    .section-head { max-width: 790px; margin-bottom: 26px; }
+    .kicker { color: var(--brand-3); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: .08em; }
+    h2 { margin: 12px 0 12px; font-size: clamp(30px, 4vw, 48px); line-height: 1; letter-spacing: -1.056px; font-weight: 510; text-wrap: balance; }
+    .section-head p { color: var(--muted); font-size: 17px; line-height: 1.65; margin: 0; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+
+    .card {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 22px;
+      min-height: 100%;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+    }
+    .card:hover { background: var(--surface-strong); }
+    .card h3 { margin: 0 0 10px; font-size: 20px; line-height: 1.2; letter-spacing: -.24px; font-weight: 590; }
+    .card p, .card li { color: var(--muted); line-height: 1.62; font-size: 15px; }
+    .card ul { padding-left: 18px; margin: 12px 0 0; }
+
+    .diagnosis-list { display: grid; gap: 10px; margin-top: 16px; }
+    .diagnosis-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.025);
+      border: 1px solid var(--line-soft);
+      color: var(--text-2);
+      line-height: 1.45;
+    }
+    .diagnosis-item span { color: var(--brand-3); font-family: 'JetBrains Mono', monospace; }
+
+    .rule-band {
+      margin-top: 28px;
+      border: 1px solid rgba(113,112,255,.28);
+      background: linear-gradient(135deg, rgba(94,106,210,.17), rgba(255,255,255,.025));
+      border-radius: 18px;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+    }
+    .rule-band strong { display: block; font-size: clamp(22px, 3vw, 34px); line-height: 1.08; letter-spacing: -.704px; }
+    .rule-band p { color: var(--text-2); line-height: 1.55; margin: 10px 0 0; }
+
+    .calculator {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.028);
+      overflow: hidden;
+    }
+    .calc-row {
+      display: grid;
+      grid-template-columns: 1.2fr .9fr .9fr .9fr .9fr .9fr;
+      gap: 0;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .calc-row:last-child { border-bottom: 0; }
+    .calc-cell { padding: 13px; border-right: 1px solid var(--line-soft); display: flex; align-items: center; }
+    .calc-cell:last-child { border-right: 0; }
+    .calc-head { color: var(--quiet); font-size: 11px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; letter-spacing: .06em; background: rgba(0,0,0,.15); }
+    .calc-cell label { color: var(--text-2); font-weight: 510; font-size: 14px; }
+    .score-select {
+      width: 100%;
+      min-height: 38px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      padding: 8px;
+      font: inherit;
+    }
+    .result-box {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .result {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,.03);
+    }
+    .result small { color: var(--quiet); font-family: 'JetBrains Mono', monospace; }
+    .result strong { display: block; margin-top: 8px; font-size: 22px; }
+    .decision { color: var(--green); }
+
+    .timeline { display: grid; gap: 12px; counter-reset: day; }
+    .timeline-item {
+      counter-increment: day;
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+    .day {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.03);
+      color: var(--text-2);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 74px;
+    }
+    .day::before { content: "D" counter(day); }
+
+    .block-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .tab {
+      min-height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.025);
+      color: var(--muted);
+      padding: 9px 13px;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 510;
+    }
+    .tab[aria-selected="true"] { color: white; background: var(--brand); border-color: rgba(255,255,255,.14); }
+
+    .block-panel { display: none; }
+    .block-panel.active { display: block; }
+    .block-panel .card { border-color: rgba(113,112,255,.22); }
+
+    .emergency {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .minute { padding: 18px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,.03); }
+    .minute b { color: var(--brand-3); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+    .minute h3 { margin: 10px 0 8px; }
+
+    .source-list { display: grid; gap: 10px; }
+    .source-list a {
+      display: block;
+      padding: 12px 14px;
+      border: 1px solid var(--line-soft);
+      border-radius: 10px;
+      color: var(--text-2);
+      background: rgba(255,255,255,.02);
+      line-height: 1.45;
+    }
+    .source-list a:hover { border-color: rgba(113,112,255,.35); background: rgba(113,112,255,.08); }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+    footer { padding: 46px 0 72px; color: var(--quiet); border-top: 1px solid var(--line-soft); }
+    footer .container { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; padding-top: 58px; }
+      .grid-2, .grid-3, .result-box, .emergency { grid-template-columns: 1fr; }
+      .rule-band { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .calc-row { grid-template-columns: 1fr; }
+      .calc-cell { border-right: 0; border-bottom: 1px solid var(--line-soft); }
+      .calc-row .calc-cell:last-child { border-bottom: 0; }
+      .calc-head { display: none; }
+      .calc-cell::before { content: attr(data-label); display: block; min-width: 98px; color: var(--quiet); font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; margin-right: 10px; }
+    }
+
+    @media (max-width: 560px) {
+      .container, .nav-inner { padding-left: 16px; padding-right: 16px; }
+      section { padding: 52px 0; }
+      .metric-grid { grid-template-columns: 1fr; }
+      .timeline-item { grid-template-columns: 1fr; }
+      .day { min-height: 44px; }
+      .hero-actions .btn { width: 100%; }
+      h1 { letter-spacing: -1px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Navegación principal">
+    <div class="nav-inner">
+      <a href="#top" class="brand" aria-label="Inicio">
+        <span class="mark">S</span>
+        <span>Anti-Procrastination OS</span>
+      </a>
+      <div class="nav-links">
+        <a href="#diagnostico">Diagnóstico</a>
+        <a href="#matriz">Matriz</a>
+        <a href="#bloqueos">Bloqueos</a>
+        <a href="#roadmap">7 días</a>
+      </div>
+      <a class="btn" href="#emergencia">Modo emergencia</a>
+    </div>
+  </nav>
+
+  <main id="top" class="container">
+    <header class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Para developers con demasiados proyectos abiertos</span>
+        <h1>Deja de confundir potencial con progreso.</h1>
+        <p class="lead">Si tienes 12 proyectos vivos, no eres más ambicioso. Eres un cuello de botella con GitHub. Este sistema reduce tu caos a una cola ejecutable: pocos proyectos, decisiones claras y bloques de trabajo que empiezan aunque no tengas ganas.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#matriz">Hacer diagnóstico de 10 minutos</a>
+          <a class="btn" href="#roadmap">Ver plan de 7 días</a>
+        </div>
+        <div class="proof-row" aria-label="Principios base">
+          <span>WIP ≤ 3</span>
+          <span>if–then plans</span>
+          <span>timeboxing</span>
+          <span>WOOP</span>
+          <span>revisión semanal</span>
+        </div>
+      </div>
+
+      <aside class="dashboard" aria-label="Vista previa del sistema">
+        <div class="dash-top">
+          <div class="traffic" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="dash-title">weekly-review.command</div>
+        </div>
+        <div class="dash-body">
+          <div class="metric-grid">
+            <div class="metric"><small>PROYECTOS ACTIVOS</small><strong>2</strong></div>
+            <div class="metric"><small>EN PARKING</small><strong>14</strong></div>
+            <div class="metric"><small>PRÓXIMO BLOQUE</small><strong>09:00</strong></div>
+          </div>
+          <div class="kanban">
+            <div class="lane">
+              <div class="lane-head"><span>principal</span><span>WIP 1/1</span></div>
+              <div class="task-card">Lanzar landing con waitlist: URL pública + formulario + analytics.</div>
+            </div>
+            <div class="lane">
+              <div class="lane-head"><span>secundario</span><span>WIP 1/1</span></div>
+              <div class="task-card">Explorar blockchain logística: demo mínima de trazabilidad.</div>
+            </div>
+            <div class="lane">
+              <div class="lane-head"><span>regla</span><span>sin negociación</span></div>
+              <div class="task-card">No entra un proyecto nuevo hasta cerrar, pausar o matar otro.</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </header>
+  </main>
+
+  <section id="diagnostico">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">01 · Diagnóstico</div>
+        <h2>La procrastinación no empieza con pereza. Empieza con ambigüedad.</h2>
+        <p>Cuando todo parece importante, tu cerebro elige lo que da alivio inmediato: investigar, rediseñar, abrir otro repo o pulir cosas que nadie ha pedido.</p>
+      </div>
+      <div class="grid-2">
+        <article class="card">
+          <h3>Síntomas de dispersión</h3>
+          <div class="diagnosis-list">
+            <div class="diagnosis-item"><span>01</span> Abres el repo y no sabes cuál es el siguiente commit.</div>
+            <div class="diagnosis-item"><span>02</span> Saltas de proyecto justo cuando aparece fricción.</div>
+            <div class="diagnosis-item"><span>03</span> Refactorizas para evitar lanzar.</div>
+            <div class="diagnosis-item"><span>04</span> Lees docs para sentir avance.</div>
+            <div class="diagnosis-item"><span>05</span> Tienes ideas nuevas cuando toca terminar las viejas.</div>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Tests brutales</h3>
+          <ul>
+            <li>Si no puedes explicar el siguiente paso en una frase, no tienes una tarea.</li>
+            <li>Si no sabes por qué este proyecto va antes que otro, no tienes prioridades.</li>
+            <li>Si no tienes fecha de revisión, no tienes compromiso.</li>
+            <li>Si todo está activo, nada está activo.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="rule-band">
+        <div>
+          <strong>Tu sistema debe reducir opciones, convertir decisiones en reglas y convertir intención en calendario.</strong>
+          <p>La mente creativa quiere amplitud. La ejecución necesita estrechez.</p>
+        </div>
+        <a class="btn primary" href="#matriz">Aplicar matriz</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="matriz">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">02 · Matriz de decisión</div>
+        <h2>Puntúa proyectos. No negocies con tu dopamina.</h2>
+        <p>Evalúa cada proyecto del 1 al 5 en impacto, tracción, coste inverso, energía y urgencia. La decisión no es perfecta; es suficientemente buena para dejar de rumiar.</p>
+      </div>
+      <div class="calculator" aria-label="Calculadora de prioridad de proyectos">
+        <div class="calc-row calc-head" aria-hidden="true">
+          <div class="calc-cell">Proyecto</div><div class="calc-cell">Impacto</div><div class="calc-cell">Tracción</div><div class="calc-cell">Coste inverso</div><div class="calc-cell">Energía</div><div class="calc-cell">Urgencia</div>
+        </div>
+        <div class="calc-row" data-project="principal">
+          <div class="calc-cell" data-label="Proyecto"><label for="p-name">Proyecto candidato</label></div>
+          <div class="calc-cell" data-label="Impacto"><select id="impacto" class="score-select" aria-label="Impacto"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select></div>
+          <div class="calc-cell" data-label="Tracción"><select id="traccion" class="score-select" aria-label="Tracción"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div>
+          <div class="calc-cell" data-label="Coste inverso"><select id="coste" class="score-select" aria-label="Coste inverso"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div>
+          <div class="calc-cell" data-label="Energía"><select id="energia" class="score-select" aria-label="Energía"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select></div>
+          <div class="calc-cell" data-label="Urgencia"><select id="urgencia" class="score-select" aria-label="Urgencia"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div>
+        </div>
+      </div>
+      <div class="result-box" aria-live="polite">
+        <div class="result"><small>PUNTUACIÓN</small><strong id="score">17</strong></div>
+        <div class="result"><small>DECISIÓN</small><strong id="decision" class="decision">Mantener en espera</strong></div>
+        <div class="result"><small>WIP RECOMENDADO</small><strong>1 + 1 + admin</strong></div>
+        <div class="result"><small>REGLA</small><strong>No entra nada sin salir algo</strong></div>
+      </div>
+      <div class="grid-3" style="margin-top:16px">
+        <article class="card"><h3>18–25</h3><p>Construir ahora. Debe entrar en calendario esta semana.</p></article>
+        <article class="card"><h3>13–17</h3><p>Mantener en espera. Válido, pero no roba foco hasta liberar WIP.</p></article>
+        <article class="card"><h3>≤ 12</h3><p>Aparcar 30 días o matar. Una idea útil también puede ser una distracción cara.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="wip">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">03 · Límite WIP</div>
+        <h2>Tu firewall contra el autoengaño: máximo tres frentes.</h2>
+        <p>WIP significa trabajo en progreso. El límite debe ser incómodo; si es cómodo, no está limitando nada.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card"><h3>1 proyecto principal</h3><p>El que mueve ingresos, carrera, aprendizaje estratégico o reputación. Tiene prioridad real en calendario.</p></article>
+        <article class="card"><h3>1 secundario</h3><p>Exploración con límite temporal. Sirve para aprender, no para escapar del principal.</p></article>
+        <article class="card"><h3>1 mantenimiento</h3><p>Administrativo, salud del sistema o tareas pequeñas necesarias. No compite con creación profunda.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="bloqueos">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">04 · Técnicas por bloqueo</div>
+        <h2>No todos los bloqueos se arreglan con Pomodoro.</h2>
+        <p>Primero nombra la fricción. Después aplicas la técnica. Si saltas directo a “motivarme”, pierdes.</p>
+      </div>
+      <div class="block-tabs" role="tablist" aria-label="Tipos de bloqueo">
+        <button class="tab" role="tab" aria-selected="true" data-tab="ambiguedad">Ambigüedad</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="tamano">Tamaño</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="juicio">Juicio</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="aburrimiento">Aburrimiento</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="investigacion">Sobreinvestigación</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="deuda">Deuda técnica</button>
+      </div>
+      <div id="ambiguedad" class="block-panel active"><article class="card"><h3>Bloqueo por ambigüedad</h3><p><strong>Síntoma:</strong> miras la tarea y no sabes empezar.</p><p><strong>Técnica:</strong> escribir el siguiente commit. Pregunta: “¿qué cambio mínimo podría hacer y probar en 20 minutos?”</p></article></div>
+      <div id="tamano" class="block-panel"><article class="card"><h3>Bloqueo por tamaño</h3><p><strong>Síntoma:</strong> el proyecto pesa demasiado.</p><p><strong>Técnica:</strong> cortar hasta que dé vergüenza. Busca una pantalla, una API, una demo o una URL enseñable.</p></article></div>
+      <div id="juicio" class="block-panel"><article class="card"><h3>Bloqueo por miedo a juicio</h3><p><strong>Síntoma:</strong> sigues puliendo antes de publicar.</p><p><strong>Técnica:</strong> exposición limitada. Enséñalo a una persona concreta con una pregunta concreta.</p></article></div>
+      <div id="aburrimiento" class="block-panel"><article class="card"><h3>Bloqueo por aburrimiento</h3><p><strong>Síntoma:</strong> sabes qué hacer, pero lo evitas.</p><p><strong>Técnica:</strong> sprint cronometrado con recompensa. 25 minutos de ejecución sin rediseñar el sistema.</p></article></div>
+      <div id="investigacion" class="block-panel"><article class="card"><h3>Bloqueo por sobreinvestigación</h3><p><strong>Síntoma:</strong> lees, comparas frameworks, miras benchmarks.</p><p><strong>Técnica:</strong> límite de investigación. Decide con 70% de información si la decisión es reversible.</p></article></div>
+      <div id="deuda" class="block-panel"><article class="card"><h3>Bloqueo por deuda técnica</h3><p><strong>Síntoma:</strong> cada cambio rompe otra cosa.</p><p><strong>Técnica:</strong> estabilizar antes de expandir. Crea una prueba de humo que te devuelva confianza mínima.</p></article></div>
+    </div>
+  </section>
+
+  <section id="emergencia">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">05 · Protocolo de emergencia</div>
+        <h2>Cuando estás evitando trabajar y ya lo sabes: 25 minutos.</h2>
+        <p>Este protocolo no busca inspiración. Busca tracción. Una ventana, un archivo, una acción.</p>
+      </div>
+      <div class="emergency">
+        <article class="minute"><b>00–03</b><h3>Descarga mental</h3><p>Escribe todo lo que estás evitando. Sin ordenar. Sin convertirlo en sistema nuevo.</p></article>
+        <article class="minute"><b>03–07</b><h3>Elige y define</h3><p>Selecciona una cosa. Debe tener primer movimiento físico y visible.</p></article>
+        <article class="minute"><b>07–22</b><h3>Ejecución cerrada</h3><p>Sin tabs nuevas, sin música nueva, sin cambiar de herramienta. Solo avance.</p></article>
+        <article class="minute"><b>22–25</b><h3>Cierre</h3><p>Qué hice, qué falta, próximo paso exacto. Si sigue bloqueado, reduce scope.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">06 · Roadmap de 7 días</div>
+        <h2>Una semana para pasar de caos a cola ejecutable.</h2>
+        <p>No vas a arreglar tu vida en siete días. Sí puedes dejar de tratar todas tus ideas como obligaciones activas.</p>
+      </div>
+      <div class="timeline">
+        <article class="timeline-item"><div class="day"></div><div class="card"><h3>Inventario brutal</h3><p>Lista repos, ideas, clientes, cursos, experimentos y “algún día”. Si ocupa RAM mental, cuenta.</p></div></article>
+        <article class="timeline-item"><div class="day"></div><div class="card"><h3>Puntuación</h3><p>Aplica la matriz. No negocies con proyectos que solo te gustan porque son nuevos.</p></div></article>
+        <article class="timeline-item"><div class="day"></div><div class="card"><h3>Recorte WIP</h3><p>Elige principal, secundario y mantenimiento. Archiva el resto con revisión a 30 días.</p></div></article>
+        <article class="timeline-item"><div class="day"></div><div class="card"><h3>Definición de entrega</h3><p>Para el principal, define un output visible: abrir, probar, enviar o vender.</p></div></article>
+        <article class="timeline-item"><div class="day"></div><div class="card"><h3>Primer bloque profundo</h3><p>90 minutos. Objetivo: movimiento real, no reorganización bonita.</p></div></article>
+        <article class="timeline-item"><div class="day"></div><div class="card"><h3>Fricción y ajuste</h3><p>Identifica si escapaste por ambigüedad, tamaño, miedo, aburrimiento, investigación o deuda.</p></div></article>
+        <article class="timeline-item"><div class="day"></div><div class="card"><h3>Revisión CEO</h3><p>Continuar, pausar, matar, lanzar o pedir feedback. Define la próxima semana antes de abrir otra idea.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="evidencia">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">07 · Evidencia usada</div>
+        <h2>Práctico, pero no inventado.</h2>
+        <p>La página sintetiza técnicas con respaldo directo o indirecto en psicología de metas, autorregulación, CBT, economía conductual y costes de cambio de tarea.</p>
+      </div>
+      <div class="source-list">
+        <a href="https://doi.org/10.1016/S0065-2601(06)38002-1" target="_blank" rel="noreferrer">Gollwitzer & Sheeran — meta-análisis sobre <span class="mono">implementation intentions</span>.</a>
+        <a href="https://doi.org/10.1037/0033-2909.133.1.65" target="_blank" rel="noreferrer">Piers Steel — procrastinación y teoría motivacional temporal.</a>
+        <a href="https://doi.org/10.1111/sjop.12458" target="_blank" rel="noreferrer">Van Eerde & Klingsieck — meta-análisis de intervenciones contra procrastinación.</a>
+        <a href="https://woopmylife.org/en/science" target="_blank" rel="noreferrer">WOOP / Mental Contrasting — investigación de Gabriele Oettingen.</a>
+        <a href="https://doi.org/10.1146/annurev.economics.102308.124324" target="_blank" rel="noreferrer">Bryan, Karlan & Nelson — commitment devices y precompromiso.</a>
+        <a href="https://doi.org/10.1037/0096-3445.130.4.763" target="_blank" rel="noreferrer">Rubinstein, Meyer & Evans — costes de cambio de tarea.</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <div class="container">
+      <div class="rule-band">
+        <div>
+          <strong>Tu problema no es falta de ideas. Es exceso de proyectos sin sistema de muerte.</strong>
+          <p>Empieza por puntuar tus proyectos. En diez minutos sabrás qué merece tu semana y qué solo estaba usando tu ansiedad como combustible.</p>
+        </div>
+        <a class="btn primary" href="#matriz">Ejecutar diagnóstico ahora</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div>Anti-Procrastination OS · versión 1.0</div>
+      <div>Diseñado para decidir, ejecutar y cerrar.</div>
+    </div>
+  </footer>
+
+  <script>
+    const selects = [...document.querySelectorAll('.score-select')];
+    const scoreEl = document.getElementById('score');
+    const decisionEl = document.getElementById('decision');
+
+    function updateScore() {
+      const total = selects.reduce((sum, select) => sum + Number(select.value), 0);
+      let decision = 'Matar o archivar';
+      let color = 'var(--red)';
+      if (total >= 18) { decision = 'Construir ahora'; color = 'var(--green)'; }
+      else if (total >= 13) { decision = 'Mantener en espera'; color = 'var(--amber)'; }
+      else if (total >= 8) { decision = 'Aparcar 30 días'; color = 'var(--red)'; }
+      scoreEl.textContent = String(total);
+      decisionEl.textContent = decision;
+      decisionEl.style.color = color;
+    }
+
+    selects.forEach(select => select.addEventListener('change', updateScore));
+    updateScore();
+
+    const tabs = [...document.querySelectorAll('.tab')];
+    const panels = [...document.querySelectorAll('.block-panel')];
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+        tabs.forEach(item => item.setAttribute('aria-selected', String(item === tab)));
+        panels.forEach(panel => panel.classList.toggle('active', panel.id === target));
+      });
+    });
+  </script>
+</body>
+</html>
