@@ -1,6 +1,6 @@
 import Keycloak from 'keycloak-js';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { createAuthConfig, getMockUser, isMockAllowed, type PublicUser } from './authConfig';
+import { createAuthConfig, getMockUser, isMockAllowed, type KeycloakPublicConfig, type PublicUser } from './authConfig';
 
 type AuthState = {
   isAuthenticated: boolean;
@@ -22,6 +22,47 @@ function userFromKeycloak(keycloak: Keycloak): PublicUser {
     name: parsed?.name || parsed?.preferred_username || parsed?.email || 'Keycloak user',
     roles: parsed?.realm_access?.roles || ['user'],
   };
+}
+
+export function hasOidcCallback(url: string): boolean {
+  const parsed = new URL(url);
+  const hash = new URLSearchParams(parsed.hash.replace(/^#/, ''));
+  const hasCodeOrError = hash.has('code') || hash.has('error');
+  return hasCodeOrError && hash.has('state');
+}
+
+let keycloakClient: Keycloak | null = null;
+let keycloakConfigKey = '';
+let keycloakInitialized = false;
+let keycloakInitPromise: Promise<boolean> | null = null;
+
+function getKeycloakClient(config: KeycloakPublicConfig): Keycloak {
+  const configKey = `${config.url}|${config.realm}|${config.clientId}`;
+  if (!keycloakClient || keycloakConfigKey !== configKey) {
+    keycloakClient = new Keycloak({ url: config.url, realm: config.realm, clientId: config.clientId });
+    keycloakConfigKey = configKey;
+    keycloakInitialized = false;
+    keycloakInitPromise = null;
+  }
+  return keycloakClient;
+}
+
+function initializeKeycloakOnce(client: Keycloak): Promise<boolean> {
+  if (keycloakInitialized) return Promise.resolve(Boolean(client.authenticated));
+  if (!keycloakInitPromise) {
+    keycloakInitPromise = client.init({ pkceMethod: 'S256', checkLoginIframe: false }).then((authenticated) => {
+      keycloakInitialized = true;
+      return authenticated;
+    }).catch((error) => {
+      keycloakClient = null;
+      keycloakConfigKey = '';
+      keycloakInitialized = false;
+      throw error;
+    }).finally(() => {
+      keycloakInitPromise = null;
+    });
+  }
+  return keycloakInitPromise;
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -51,11 +92,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        const client = new Keycloak({ url: config.url, realm: config.realm, clientId: config.clientId });
-        const authenticated = await client.init({ onLoad: 'check-sso', pkceMethod: 'S256', checkLoginIframe: false });
+        const client = getKeycloakClient(config);
+        if (hasOidcCallback(window.location.href)) {
+          const authenticated = await initializeKeycloakOnce(client);
+          if (cancelled) return;
+          setKeycloak(client);
+          setState({ isAuthenticated: authenticated, isLoading: false, user: authenticated ? userFromKeycloak(client) : null });
+          return;
+        }
         if (cancelled) return;
         setKeycloak(client);
-        setState({ isAuthenticated: authenticated, isLoading: false, user: authenticated ? userFromKeycloak(client) : null });
+        setState({
+          isAuthenticated: Boolean(keycloakInitialized && client.authenticated),
+          isLoading: false,
+          user: keycloakInitialized && client.authenticated ? userFromKeycloak(client) : null,
+        });
       } catch (error) {
         if (!cancelled) setState({ isAuthenticated: false, isLoading: false, user: null, error: error instanceof Error ? error.message : String(error) });
       }
@@ -74,7 +125,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setState({ isAuthenticated: true, isLoading: false, user: getMockUser() });
           return;
         }
-        await keycloak?.login();
+        if (!keycloak) return;
+        if (!keycloakInitialized) {
+          const authenticated = await initializeKeycloakOnce(keycloak);
+          if (authenticated) {
+            setState({ isAuthenticated: true, isLoading: false, user: userFromKeycloak(keycloak) });
+            return;
+          }
+        }
+        await keycloak.login();
       },
       async logout() {
         if (!config) return;
