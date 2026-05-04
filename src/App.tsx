@@ -1,6 +1,7 @@
 import { useMemo, useState, type FormEvent } from 'react';
 import { useAuth } from './auth/AuthProvider';
-import type { Project, ProjectScores, ProjectStatus, ProjectType } from './domain/types';
+import { blockerOptions, buildDailyFocusFromRescue, getRescueRecommendation } from './domain/coaching';
+import type { EnergyLevel, FocusBlockerType, Project, ProjectScores, ProjectStatus, ProjectType } from './domain/types';
 import { calculateScore, detectWipPressure, findZombieProjects, generateEmergencyAction, getDecisionBand, getMetrics, getWeeklyReviewIssues, isConcreteNextAction } from './domain/planning';
 import { exportWorkspace } from './storage/workspace';
 import { useWorkspace } from './storage/useWorkspace';
@@ -80,12 +81,17 @@ function AppShell() {
   const { workspace, setWipLimit, saveProject, changeStatus, addEvent, setDailyFocus, completeWeeklyReview } = useWorkspace(auth.user?.id || 'anonymous');
   const [draft, setDraft] = useState<Project>(() => createBlankProject());
   const [reviewNotes, setReviewNotes] = useState('');
+  const [rescueProjectId, setRescueProjectId] = useState('');
+  const [rescueTask, setRescueTask] = useState('');
+  const [rescueBlocker, setRescueBlocker] = useState<FocusBlockerType>('NO_START');
+  const [rescueEnergy, setRescueEnergy] = useState<EnergyLevel>('MEDIUM');
 
   const metrics = useMemo(() => getMetrics(workspace.projects, workspace.events), [workspace]);
   const wip = useMemo(() => detectWipPressure(workspace.projects, workspace.wipLimit), [workspace]);
   const zombies = useMemo(() => findZombieProjects(workspace.projects), [workspace.projects]);
   const weeklyIssues = useMemo(() => getWeeklyReviewIssues(workspace.projects), [workspace.projects]);
   const emergency = useMemo(() => generateEmergencyAction(workspace.projects), [workspace.projects]);
+  const rescueProject = useMemo(() => workspace.projects.find((project) => project.id === rescueProjectId) ?? workspace.projects.find((project) => project.status === 'now') ?? workspace.projects.find((project) => !['done', 'killed', 'archived'].includes(project.status)), [workspace.projects, rescueProjectId]);
 
   function setDraftScore(key: keyof ProjectScores, value: number) {
     setDraft((current) => ({ ...current, scores: { ...current.scores, [key]: value } }));
@@ -102,6 +108,18 @@ function AppShell() {
     if (!emergency) return;
     addEvent({ type: 'emergency_started', projectId: emergency.projectId, message: `Emergencia: ${emergency.action}` });
     changeStatus(emergency.projectId, 'now');
+  }
+
+  function startRescue(event: FormEvent) {
+    event.preventDefault();
+    if (!rescueProject) return;
+    const taskLabel = rescueTask.trim() || rescueProject.nextAction || `definir la próxima acción concreta de ${rescueProject.name}`;
+    const recommendation = getRescueRecommendation({ blockerType: rescueBlocker, taskLabel, energy: rescueEnergy });
+    setDailyFocus(buildDailyFocusFromRescue(rescueProject, recommendation, new Date().toISOString().slice(0, 10)));
+    addEvent({ type: 'rescue_started', projectId: rescueProject.id, message: `${rescueBlocker}: ${taskLabel}` });
+    changeStatus(rescueProject.id, 'now');
+    setRescueProjectId(rescueProject.id);
+    setRescueTask('');
   }
 
   function downloadExport() {
@@ -145,6 +163,7 @@ function AppShell() {
         <div><small>Blocked</small><strong>{metrics.blocked}</strong></div>
         <div><small>Killed</small><strong>{metrics.killed}</strong></div>
         <div><small>Emergencias</small><strong>{metrics.emergencies}</strong></div>
+        <div><small>Rescates</small><strong>{metrics.rescues}</strong></div>
       </section>
 
       <section className="layout-2">
@@ -179,7 +198,30 @@ function AppShell() {
             <option value="">Elegir proyecto principal de hoy</option>
             {workspace.projects.filter((project) => !['done', 'killed', 'archived'].includes(project.status)).map((project) => <option key={project.id} value={project.id}>{project.name}</option>)}
           </select>
-          {workspace.dailyFocus ? <div className="focus-card"><strong>{workspace.dailyFocus.task}</strong><span>{workspace.dailyFocus.doneDefinition}</span><button className="btn primary" onClick={() => addEvent({ type: 'focus_completed', projectId: workspace.dailyFocus?.projectId, message: 'Foco diario completado' })}>Marcar completado</button></div> : <p className="muted">Al abrir la app, decide una sola cosa. Si todo importa, nada importa.</p>}
+          {workspace.dailyFocus ? <div className="focus-card"><strong>{workspace.dailyFocus.task}</strong><span>{workspace.dailyFocus.doneDefinition}</span><span>{workspace.dailyFocus.timeboxMinutes ? `${workspace.dailyFocus.timeboxMinutes} min · ` : ''}Rescate: {workspace.dailyFocus.risk}</span><button className="btn primary" onClick={() => addEvent({ type: 'focus_completed', projectId: workspace.dailyFocus?.projectId, message: 'Foco diario completado' })}>Marcar completado</button></div> : <p className="muted">Al abrir la app, decide una sola cosa. Si todo importa, nada importa.</p>}
+
+          <form className="rescue-form" onSubmit={startRescue}>
+            <div className="panel-title spaced">Hestia · rescate de bloqueo</div>
+            <p className="muted">Cuando estés bloqueado, no reorganices todo: convierte el bloqueo en una microacción ejecutable.</p>
+            <label className="field-label" htmlFor="rescue-project">Proyecto bloqueado</label>
+            <select id="rescue-project" value={rescueProject?.id || ''} onChange={(event) => setRescueProjectId(event.target.value)} disabled={!workspace.projects.length}>
+              <option value="">Elegir proyecto</option>
+              {workspace.projects.filter((project) => !['done', 'killed', 'archived'].includes(project.status)).map((project) => <option key={project.id} value={project.id}>{project.name}</option>)}
+            </select>
+            <label className="field-label" htmlFor="rescue-blocker">Qué te bloquea ahora</label>
+            <select id="rescue-blocker" value={rescueBlocker} onChange={(event) => setRescueBlocker(event.target.value as FocusBlockerType)}>
+              {blockerOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+            </select>
+            <label className="field-label" htmlFor="rescue-task">Tarea concreta</label>
+            <input id="rescue-task" value={rescueTask} onChange={(event) => setRescueTask(event.target.value)} placeholder={rescueProject?.nextAction || 'Qué intento hacer ahora'} />
+            <label className="field-label" htmlFor="rescue-energy">Energía</label>
+            <select id="rescue-energy" value={rescueEnergy} onChange={(event) => setRescueEnergy(event.target.value as EnergyLevel)}>
+              <option value="LOW">Baja · 5 min</option>
+              <option value="MEDIUM">Media · 10 min</option>
+              <option value="HIGH">Alta · 25 min</option>
+            </select>
+            <button className="btn primary" type="submit" disabled={!rescueProject}>Crear contrato de foco</button>
+          </form>
 
           <div className="panel-title spaced">modo emergencia</div>
           {emergency ? <div className="emergency"><strong>{emergency.projectName}</strong><span>{emergency.minutes} min · {emergency.action}</span><button className="btn danger" onClick={startEmergency}>Estoy saturado: ejecutar</button></div> : <p className="muted">No hay proyectos activos para emergencia.</p>}

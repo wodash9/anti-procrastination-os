@@ -1,11 +1,11 @@
-# Graph Report - .  (2026-05-03)
+# Graph Report - .  (2026-05-04)
 
 ## Corpus Check
-- 17 files · ~5,464 words
+- 19 files · ~6,346 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 48 nodes · 35 edges · 17 communities detected
+- 54 nodes · 40 edges · 19 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -27,6 +27,8 @@
 - [[_COMMUNITY_Community 14|Community 14]]
 - [[_COMMUNITY_Community 15|Community 15]]
 - [[_COMMUNITY_Community 16|Community 16]]
+- [[_COMMUNITY_Community 17|Community 17]]
+- [[_COMMUNITY_Community 18|Community 18]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `workspaceKey()` - 3 edges
@@ -35,6 +37,8 @@
 4. `submitProject()` - 2 edges
 5. `createEmptyWorkspace()` - 2 edges
 6. `saveWorkspace()` - 2 edges
+7. `normalizeTimebox()` - 2 edges
+8. `getRescueRecommendation()` - 2 edges
 
 ## Surprising Connections (you probably didn't know these)
 - None detected - all connections are within the same source files.
@@ -42,12 +46,12 @@
 ## Communities
 
 ### Community 0 - "Community 0"
-Cohesion: 0.22
-Nodes (0):
+Cohesion: 0.25
+Nodes (2): createBlankProject(), submitProject()
 
 ### Community 1 - "Community 1"
-Cohesion: 0.29
-Nodes (2): createBlankProject(), submitProject()
+Cohesion: 0.22
+Nodes (0):
 
 ### Community 2 - "Community 2"
 Cohesion: 0.43
@@ -63,10 +67,10 @@ Nodes (0):
 
 ### Community 5 - "Community 5"
 Cohesion: 0.67
-Nodes (0):
+Nodes (2): getRescueRecommendation(), normalizeTimebox()
 
 ### Community 6 - "Community 6"
-Cohesion: 1.0
+Cohesion: 0.67
 Nodes (0):
 
 ### Community 7 - "Community 7"
@@ -109,28 +113,38 @@ Nodes (0):
 Cohesion: 1.0
 Nodes (0):
 
+### Community 17 - "Community 17"
+Cohesion: 1.0
+Nodes (0):
+
+### Community 18 - "Community 18"
+Cohesion: 1.0
+Nodes (0):
+
 ## Knowledge Gaps
-- **Thin community `Community 6`** (1 nodes): `vite.config.ts`
+- **Thin community `Community 7`** (1 nodes): `vite.config.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 7`** (1 nodes): `vite.config.d.ts`
+- **Thin community `Community 8`** (1 nodes): `vite.config.d.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 8`** (1 nodes): `vite.config.js`
+- **Thin community `Community 9`** (1 nodes): `vite.config.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 9`** (1 nodes): `vite-env.d.ts`
+- **Thin community `Community 10`** (1 nodes): `vite-env.d.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 10`** (1 nodes): `main.tsx`
+- **Thin community `Community 11`** (1 nodes): `main.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 11`** (1 nodes): `workspace.test.ts`
+- **Thin community `Community 12`** (1 nodes): `workspace.test.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 12`** (1 nodes): `setup.ts`
+- **Thin community `Community 13`** (1 nodes): `setup.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 13`** (1 nodes): `authConfig.test.ts`
+- **Thin community `Community 14`** (1 nodes): `authConfig.test.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 14`** (1 nodes): `AuthProvider.test.ts`
+- **Thin community `Community 15`** (1 nodes): `AuthProvider.test.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 15`** (1 nodes): `types.ts`
+- **Thin community `Community 16`** (1 nodes): `types.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 16`** (1 nodes): `planning.test.ts`
+- **Thin community `Community 17`** (1 nodes): `planning.test.ts`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 18`** (1 nodes): `coaching.test.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions

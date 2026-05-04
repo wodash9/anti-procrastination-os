@@ -68,7 +68,7 @@ describe('planning domain', () => {
     expect(action).toEqual({ projectId: 'p2', projectName: 'Cliente X', action: 'enviar email de alcance al cliente', minutes: 15 });
   });
 
-  it('computes behavior metrics', () => {
+  it('computes behavior metrics including rescue sessions', () => {
     const metrics = getMetrics([
       baseProject,
       { ...baseProject, id: 'blocked', status: 'blocked' },
@@ -76,7 +76,8 @@ describe('planning domain', () => {
     ], [
       { id: 'e1', type: 'focus_completed', createdAt: '2026-05-03T08:00:00.000Z', message: 'done' },
       { id: 'e2', type: 'emergency_started', createdAt: '2026-05-03T09:00:00.000Z', message: 'panic' },
+      { id: 'e3', type: 'rescue_started', createdAt: '2026-05-03T10:00:00.000Z', message: 'blocked' },
     ]);
-    expect(metrics).toMatchObject({ now: 1, blocked: 1, killed: 1, focusCompleted: 1, emergencies: 1 });
+    expect(metrics).toMatchObject({ now: 1, blocked: 1, killed: 1, focusCompleted: 1, emergencies: 1, rescues: 1 });
   });
 });

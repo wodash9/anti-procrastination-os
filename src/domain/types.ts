@@ -1,5 +1,7 @@
 export type ProjectStatus = 'inbox' | 'now' | 'next' | 'blocked' | 'waiting' | 'done' | 'killed' | 'archived';
 export type ProjectType = 'client' | 'product' | 'experiment' | 'infra' | 'learning' | 'personal';
+export type FocusBlockerType = 'TOO_BIG' | 'NO_START' | 'ANXIOUS' | 'DISTRACTED' | 'TIRED';
+export type EnergyLevel = 'LOW' | 'MEDIUM' | 'HIGH';
 
 export type ProjectScores = {
   impact: number;
@@ -39,7 +41,8 @@ export type WorkspaceEventType =
   | 'focus_completed'
   | 'focus_failed'
   | 'weekly_review_completed'
-  | 'emergency_started';
+  | 'emergency_started'
+  | 'rescue_started';
 
 export type WorkspaceEvent = {
   id: string;
@@ -49,6 +52,15 @@ export type WorkspaceEvent = {
   projectId?: string;
 };
 
+export type RescueRecommendation = {
+  blockerType: FocusBlockerType;
+  strategyId: string;
+  microAction: string;
+  successSignal: string;
+  fallbackAction: string;
+  timeboxMinutes: number;
+};
+
 export type DailyFocus = {
   date: string;
   projectId: string;
@@ -56,6 +68,9 @@ export type DailyFocus = {
   doneDefinition: string;
   risk: string;
   status: 'planned' | 'completed' | 'partial' | 'failed' | 'cancelled';
+  blockerType?: FocusBlockerType;
+  rescueStrategyId?: string;
+  timeboxMinutes?: number;
 };
 
 export type WeeklyReview = {

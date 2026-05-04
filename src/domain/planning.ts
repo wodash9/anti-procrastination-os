@@ -81,5 +81,6 @@ export function getMetrics(projects: Project[], events: WorkspaceEvent[]) {
     done: projects.filter((project) => project.status === 'done').length,
     focusCompleted: events.filter((event) => event.type === 'focus_completed').length,
     emergencies: events.filter((event) => event.type === 'emergency_started').length,
+    rescues: events.filter((event) => event.type === 'rescue_started').length,
   };
 }

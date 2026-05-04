@@ -67,7 +67,7 @@ h1 { margin: 22px 0 16px; font-size: clamp(42px, 6.8vw, 76px); line-height: .95;
 .wip-box strong { display: block; font-size: 38px; margin: 8px 0 12px; }
 .wip-box.danger { border-color: rgba(251,113,133,.5); background: rgba(251,113,133,.11); }
 .metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.metric-grid.wide { grid-template-columns: repeat(6, 1fr); margin-bottom: 18px; }
+.metric-grid.wide { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); margin-bottom: 18px; }
 .metric-grid > div { border: 1px solid var(--line-soft); background: rgba(0,0,0,.18); border-radius: 14px; padding: 16px; }
 .metric-grid strong { display: block; font-size: 28px; margin-top: 8px; }
 
@@ -87,6 +87,8 @@ form.panel { display: grid; gap: 10px; }
 
 .focus-card, .emergency, .zombie { border: 1px solid var(--line-soft); background: rgba(0,0,0,.18); border-radius: 14px; padding: 14px; display: grid; gap: 10px; margin-top: 12px; }
 .focus-card span, .emergency span, .zombie span { color: var(--muted); }
+.rescue-form { display: grid; gap: 10px; margin-top: 12px; padding-top: 4px; }
+.rescue-form .muted { margin: 0 0 2px; font-size: 13px; line-height: 1.45; }
 
 .board { display: grid; grid-template-columns: repeat(7, minmax(220px, 1fr)); gap: 12px; overflow-x: auto; padding: 8px 0 18px; }
 .lane { padding: 12px; min-height: 260px; }
